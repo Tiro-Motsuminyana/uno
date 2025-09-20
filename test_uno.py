@@ -60,7 +60,7 @@ def test_player_play_removes_card():
     c = Card("Red", "7")
     notC= Card("Red","4")
     p.hand.append(c)
-    played = p.play(c,notC,"Blue")
+    played = p.play(c,notC,"Red")
     assert played == c
     assert c not in p.hand
 
@@ -84,8 +84,8 @@ def test_play_turn_changes_top_card():
     g = Game(["A", "B"])
     p = g.players[0]
     # force a valid card
-    card = Card(g.top_card.colour, g.top_card.num)
-    #card = Card(g.top_card.colour, g.top_card.value)
+    #card = Card(g.top_card.colour, g.top_card.num)
+    card = Card(g.top_card.colour, g.top_card.value)
     p.hand.append(card)
     g.play_turn(p, card)
     assert g.top_card == card
