@@ -60,7 +60,7 @@ def test_player_play_removes_card():
     c = Card("Red", "7")
     notC= Card("Red","4")
     p.hand.append(c)
-    played = p.play(c,notC,"Red")
+    played = p.play(c,notC,"Blue")
     assert played == c
     assert c not in p.hand
 
