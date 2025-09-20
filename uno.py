@@ -19,13 +19,14 @@ class Card:
         return (
             self.colour == current_colour
             or self.value == top_card.value
-            or self.colour == "wild"
+            or self.value == "wild"
         )
 
 
 class Deck:
     def __init__(self):
         self.cards = self._build_deck()
+        self.discard_pile=[]
         random.shuffle(self.cards)
 
     def _build_deck(self):
@@ -46,9 +47,16 @@ class Deck:
             cards.append(Card("wild", "+4"))
             cards.append(Card("wild", "wild"))
         return cards
+    def discard(self,card):
+        self.discard_pile.append(card)
 
     def draw(self, n=1):
-        drawn = [self.cards.pop() for _ in range(n)]
+        while True:
+            try:
+                drawn = [self.cards.pop() for _ in range(n)]
+                break
+            except IndexError:
+                self.cards=self.discard_pile
         return drawn if n > 1 else drawn[0]
 
 
@@ -71,7 +79,7 @@ class Game:
     def __init__(self, player_names):
         self.deck = Deck()
         self.players = [Player(name) for name in player_names]
-        self.discard_pile = []
+        self.discard_pile=self.deck.discard_pile
         self.current_colour = None
         self.direction = 1  # 1 = clockwise, -1 = counter
         self.turn_index = 0

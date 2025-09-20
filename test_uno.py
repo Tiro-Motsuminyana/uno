@@ -18,7 +18,7 @@ def test_card_playable_same_number():
 
 
 def test_card_playable_wild():
-    wild = Card(None, "wild")
+    wild = Card("wild", "wild")
     red_five = Card("Red", "5")
     assert wild.is_playable_on(red_five, "Red")
 
@@ -58,8 +58,9 @@ def test_player_draw_adds_cards():
 def test_player_play_removes_card():
     p = Player("Bob")
     c = Card("Red", "7")
+    notC= Card("Red","4")
     p.hand.append(c)
-    played = p.play(c)
+    played = p.play(c,notC,"Red")
     assert played == c
     assert c not in p.hand
 
@@ -83,7 +84,7 @@ def test_play_turn_changes_top_card():
     g = Game(["A", "B"])
     p = g.players[0]
     # force a valid card
-    card = Card(g.top_card.colour, g.top_card.num)
+    card = Card(g.top_card.colour, g.top_card.value)
     p.hand.append(card)
     g.play_turn(p, card)
     assert g.top_card == card
