@@ -32,7 +32,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Run tests
+      # 4. Run tests with JUnit XML output
       - name: Run tests
         run: |
-          pytest -v
+          pytest -v --junitxml=test-results.xml
+
+      # 5. Upload test results as an artifact
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results.xml
