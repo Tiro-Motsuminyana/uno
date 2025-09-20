@@ -1,4 +1,13 @@
 import random
+"""
+uno card break down
+19 number cards (1 zero and 2 of each number up to 9)
+2 reverse cards.
+2 skip cards.
+2 draw 2 cards.
+4 wild draw 4 cards.
+4 wild cards.
+"""
 
 COLOURS = ["Red", "Green", "Blue", "Yellow"]
 SPECIALS = ["skip", "reverse", "+2"]
@@ -32,17 +41,13 @@ class Deck:
     def _build_deck(self):
         cards = []
         for colour in COLOURS:
-            # one zero
             cards.append(Card(colour, "0"))
-            # two of 1–9
             for n in range(1, 10):
                 cards.append(Card(colour, str(n)))
                 cards.append(Card(colour, str(n)))
-            # two of each action
             for action in SPECIALS:
                 cards.append(Card(colour, action))
                 cards.append(Card(colour, action))
-        # wilds
         for _ in range(4):
             cards.append(Card("wild", "+4"))
             cards.append(Card("wild", "wild"))
@@ -118,8 +123,7 @@ class Game:
 
     def apply_effects(self, card):
         if card.colour == "wild":
-            # colour choice would normally be user/computer input
-            self.current_colour = random.choice(COLOURS)
+            print('What colour would you like to play on after this turn')
             if card.value == "+4":
                 self.pending_draw += 4
         else:
@@ -142,8 +146,6 @@ def run_cli_game():
         print("Your hand:")
         for i, card in enumerate(player.hand):
             print(f"{i}: {card}")
-
-        # check pending draw
         if game.pending_draw > 0:
             print(f"You must draw {game.pending_draw} cards!")
             player.draw(game.deck, game.pending_draw)
@@ -177,7 +179,7 @@ def run_cli_game():
 
         # check win
         if not player.hand:
-            print(f"🎉 {player.name} wins the game! 🎉")
+            print(f"{player.name} wins the game!")
             break
 
 
