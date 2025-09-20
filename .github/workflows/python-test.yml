@@ -1,6 +1,5 @@
 name: Python Tests
 
-# Run this workflow on push or PR to main (or other branches)
 on:
   push:
     branches: [ main ]
@@ -32,13 +31,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Run tests with JUnit XML output
+      # 4. Run tests and always generate JUnit XML
       - name: Run tests
+        id: pytest
         run: |
-          pytest -v --junitxml=test-results.xml
+          pytest -v --junitxml=test-results.xml || echo "Tests failed, XML generated for artifact"
 
-      # 5. Upload test results as an artifact
-      - name: Upload test results
+      # 5. Upload test-results artifact only if there are failures
+      - name: Upload failing test results
+        if: failure()  # only run this step if previous step failed
         uses: actions/upload-artifact@v3
         with:
           name: test-results
